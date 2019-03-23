@@ -36,6 +36,7 @@ class ConfigConsolidator extends Controller
                 $yaml = new Parser();
 
                 $this->appConfigList = $yaml->parse($appLevelConfig);
+                dump($this->appConfigList); // TODO: remove dump
                 $this->moduleConfigList = $yaml->parse($moduleLevelConfig ?? '');
                 $this->extraConfigList = $yaml->parse($extraAddition ?? '');
 
@@ -82,7 +83,11 @@ class ConfigConsolidator extends Controller
     {
         foreach ($newConfig as $item => $subItem) {
             foreach ($subItem as $subItemString) {
-                if ($subItemString[0] === '-') {
+                if (is_array($subItemString)) {
+                    $subItemString = key($subItemString);
+                }
+                dump($subItemString);
+                if (strpos($subItemString, '-') === 0) {
                     $subItemHash = md5(substr($subItemString, 1));
                     unset($configList[$item][$subItemHash]);
                 } else {
