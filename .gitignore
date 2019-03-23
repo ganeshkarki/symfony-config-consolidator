@@ -9,3 +9,31 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+
+# IntelliJ
+*.iml
+.idea/workspace.xml
+.idea/assetWizardSettings.xml
+.idea/dictionaries
+.idea/libraries
+.idea/caches
+
+# User-specific stuff
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+
+# Generated files
+.idea/**/contentModel.xml
+
+# Homestead
+/.vagrant
+phpunit.xml
+/Homestead.json
+/after.sh
+/aliases
+/mysqldump.sql.gz
+/mysql_backup
+/postgres_backup
+/user-customizations.sh
