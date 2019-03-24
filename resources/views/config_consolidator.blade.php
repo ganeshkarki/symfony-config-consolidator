@@ -64,6 +64,10 @@
             color: #FF0000;
             font-weight: 600;
         }
+
+        .no-underline-link {
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
@@ -75,6 +79,9 @@
         <div class="subtitle m-b-md">
             For stylesheets and javascripts (Symfony 1.4 - view.yml)
         </div>
+        <a class="no-underline-link" href="https://github.com/ganeshkarki/symfony-config-consolidator">
+            <img src="https://github.githubassets.com/images/modules/logos_page/Octocat.png" height="32" width="32">
+        </a>
         <br>
         @if($errors->any())
             <div class="error">
@@ -86,19 +93,19 @@
         <form method="post">
             {{ csrf_field() }}
             <input type="checkbox" name="transform" value="yes" checked /> Transform "- - subItem" to "- -subItem"<br><br>
-            <label for="app-config">App Level Config</label>
+            <label for="app-config">App Level Config (YAML)</label>
             <br>
             <textarea id="app-config" name="app-config" rows="10" cols="100" required>{{ $inputConfig['app'] ?? null }}</textarea>
             <br><br>
-            <label for="module-config">Module Level Default Config</label>
+            <label for="module-config">Module Level Default Config (YAML)</label>
             <br>
             <textarea id="module-config" name="module-config" rows="10" cols="100">{{ $inputConfig['module'] ?? null }}</textarea>
             <br><br>
-            <label for="page-config">Page Level Config</label>
+            <label for="page-config">Page Level Config (YAML)</label>
             <br>
             <textarea id="page-config" name="page-config" rows="10" cols="100">{{ $inputConfig['page'] ?? null }}</textarea>
             <br><br>
-            <label for="extra-config">Manually added settings (yaml format)</label>
+            <label for="extra-config">Manually added settings (YAML)</label>
             <br>
             <textarea id="extra-config" name="extra-config" rows="5" cols="100">{{ $inputConfig['extra'] ?? null }}</textarea>
             <br>
@@ -108,7 +115,7 @@
 
         @if(!empty($mergeResults))
             <div class="result">
-                <label for="merged-results">Results</label>
+                <label for="merged-results">Results (YAML)</label>
                 <br>
                 <textarea id="merged-results" name="merged-results" rows="10" cols="100" readonly>{!! $mergeResults !!}</textarea>
                 <br><br>
