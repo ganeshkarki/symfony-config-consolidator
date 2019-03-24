@@ -4,8 +4,8 @@
 
 ## About Symfony Config Consolidator
 
-Symfony config consolidator is web app to merge and make the list of config's especially `javascripts` and `stylesheets` for Legacy 1.4 Symfony.
-The `view.yml` as explained in [View Configuration Settings](https://symfony.com/legacy/doc/gentle-introduction/1_4/en/07-Inside-the-View-Layer) follows hierarchical rules for inclusion where it first applies application `view.yml` then module level `view.yml` config for `all` then the specifc template entries in the same file and then in template helper modifiers.
+Symfony config consolidator is web app to merge the  `javascripts` and `stylesheets` config's for view.yml (Symfony 1.4).
+The `view.yml` configurations as explained in [View Configuration Settings](https://symfony.com/legacy/doc/gentle-introduction/1_4/en/07-Inside-the-View-Layer) are defined at different levels (project and application) and the final parameter values results from a cascade. The stles and scripts can be added or removed from several configs as well as controller/template. This web-app accepts similar multiple yaml inputs and outputs final list.
 
 Example:
 Sample Application `view.yml`
@@ -28,7 +28,6 @@ Resulting indexSuccess View
 <link rel="stylesheet" type="text/css" media="screen" href="/css/special.css" />
 ```
 
-
 Sample Module view.yml That Removes a File Defined at the Application Level (note `-` before main)
 ```
 indexSuccess:
@@ -37,8 +36,6 @@ indexSuccess:
 all:
   stylesheets: [additional]
 ```
-
-This web-app takes the input as yaml for app level, module level (`all`), page level and template level yaml to make final results
 
 ## Built with
 - [Laravel](https://laravel.com)
