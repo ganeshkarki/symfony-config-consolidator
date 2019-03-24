@@ -20,19 +20,24 @@ class ConfigConsolidator extends Controller
      * Handle the incoming request.
      *
      * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
     public function __invoke (Request $request)
     {
         $consolidatedList = [];
 
         if ($request->method() === Request::METHOD_POST) {
-            // TODO: Form Validation
-
             $appLevelConfig = $request->input('app-config');
-            $moduleLevelConfig = $request->get('module-config');
-            $pageLevelConfig = $request->get('page-config');
-            $extraAddition = $request->get('extra-config');
+            $moduleLevelConfig = $request->input('module-config');
+            $pageLevelConfig = $request->input('page-config');
+            $extraAddition = $request->input('extra-config');
+
+            if ($request->input('transform', 'no') === 'yes') {
+                $this->transformDoubleDashToStringWithDashBefore($appLevelConfig);
+                $this->transformDoubleDashToStringWithDashBefore($moduleLevelConfig);
+                $this->transformDoubleDashToStringWithDashBefore($pageLevelConfig);
+                $this->transformDoubleDashToStringWithDashBefore($extraAddition);
+            }
 
             session([
                 'inputConfig' => [
@@ -47,7 +52,6 @@ class ConfigConsolidator extends Controller
                 $yaml = new Parser();
 
                 $this->appConfigList = $yaml->parse($appLevelConfig);
-                dump($this->appConfigList); // TODO: remove dump
                 $this->moduleConfigList = $yaml->parse($moduleLevelConfig ?? '');
                 $this->pageConfigList = $yaml->parse($pageLevelConfig ?? '');
                 $this->extraConfigList = $yaml->parse($extraAddition ?? '');
@@ -56,13 +60,18 @@ class ConfigConsolidator extends Controller
 
             } catch (ParseException $parseException) {
                 Log::alert($parseException->getMessage());
-                // TODO: show error in frontend
+
+                return redirect()->back()
+                    ->withInput($request->all())
+                    ->withErrors($parseException->getMessage());
             } catch (\Exception $e) {
                 Log::alert('Something went wrong:' . $e->getMessage());
+                return redirect()->back()
+                    ->withInput($request->all())
+                    ->withErrors($e->getMessage());
             }
 
             $consolidatedList = $this->getYamlString($consolidatedList);
-            // dump($consolidatedList);
         }
 
         return view('config_consolidator',['mergeResults' => $consolidatedList, 'inputConfig' => session('inputConfig')]);
@@ -102,7 +111,7 @@ class ConfigConsolidator extends Controller
                 if (is_array($subItemString)) {
                     $subItemString = key($subItemString);
                 }
-                dump($subItemString);
+
                 if (strpos($subItemString, '-') === 0) {
                     $subItemHash = md5(substr($subItemString, 1));
                     unset($configList[$item][$subItemHash]);
@@ -130,5 +139,10 @@ class ConfigConsolidator extends Controller
         }
 
         return '';
+    }
+
+    private function transformDoubleDashToStringWithDashBefore(&$yamlString): void
+    {
+        $yamlString = str_replace('- - ', '- -', $yamlString);
     }
 }
