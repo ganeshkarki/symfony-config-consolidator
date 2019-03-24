@@ -2,7 +2,7 @@
     /** @var \Illuminate\Support\ViewErrorBag $errors */
 @endphp
 
-        <!doctype html>
+<!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
@@ -75,17 +75,21 @@
         </div>
         <form method="post">
             {{ csrf_field() }}
-            <label for="app-yaml">App Level Config</label>
+            <label for="app-config">App Level Config</label>
             <br>
-            <textarea id="app-yaml" name="app-yaml" rows="5" cols="100" required></textarea>
+            <textarea id="app-config" name="app-config" rows="5" cols="100" required>{{ $inputConfig['app'] ?? null }}</textarea>
             <br><br>
-            <label for="module-yaml">Module Level Config</label>
+            <label for="module-config">Module Level Default Config</label>
             <br>
-            <textarea id="module-yaml" name="module-yaml" rows="5" cols="100"></textarea>
+            <textarea id="module-config" name="module-config" rows="5" cols="100">{{ $inputConfig['module'] ?? null }}</textarea>
             <br><br>
-            <label for="manually-added-items">Manually added settings (yaml format)</label>
+            <label for="module-yaml-default">Page Level Config</label>
             <br>
-            <textarea id="manually-added-items" name="manually-added-items" rows="5" cols="100"></textarea>
+            <textarea id="page-config" name="page-config" rows="5" cols="100">{{ $inputConfig['page'] ?? null }}</textarea>
+            <br><br>
+            <label for="extra-config">Manually added settings (yaml format)</label>
+            <br>
+            <textarea id="extra-config" name="extra-config" rows="5" cols="100">{{ $inputConfig['extra'] ?? null }}</textarea>
             <br>
             <input type="submit" value="Merge">
         </form>
@@ -102,9 +106,7 @@
             <div class="result">
                 <label for="merged-results">Results</label>
                 <br>
-                <textarea id="merged-results" name="merged-results" rows="5" cols="100" readonly>
-                    {!! $mergeResults !!}
-                </textarea>
+                <textarea id="merged-results" name="merged-results" rows="5" cols="100" readonly>{!! $mergeResults !!}</textarea>
             </div>
         @endif
     </div>

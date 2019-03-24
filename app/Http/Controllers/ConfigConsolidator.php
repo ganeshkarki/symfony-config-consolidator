@@ -12,8 +12,9 @@ use Symfony\Component\Yaml\Dumper;
 class ConfigConsolidator extends Controller
 {
     private $appConfigList = [];
-    private $extraConfigList = [];
     private $moduleConfigList = [];
+    private $pageConfigList = [];
+    private $extraConfigList = [];
 
     /**
      * Handle the incoming request.
@@ -28,9 +29,19 @@ class ConfigConsolidator extends Controller
         if ($request->method() === Request::METHOD_POST) {
             // TODO: Form Validation
 
-            $appLevelConfig = $request->input('app-yaml');
-            $moduleLevelConfig = $request->get('module-yaml');
-            $extraAddition = $request->get('manually-added-items', '');
+            $appLevelConfig = $request->input('app-config');
+            $moduleLevelConfig = $request->get('module-config');
+            $pageLevelConfig = $request->get('page-config');
+            $extraAddition = $request->get('extra-config');
+
+            session([
+                'inputConfig' => [
+                    'app' => $appLevelConfig,
+                    'module' => $moduleLevelConfig,
+                    'page' => $pageLevelConfig,
+                    'extra' => $extraAddition
+                ]
+            ]);
 
             try {
                 $yaml = new Parser();
@@ -38,6 +49,7 @@ class ConfigConsolidator extends Controller
                 $this->appConfigList = $yaml->parse($appLevelConfig);
                 dump($this->appConfigList); // TODO: remove dump
                 $this->moduleConfigList = $yaml->parse($moduleLevelConfig ?? '');
+                $this->pageConfigList = $yaml->parse($pageLevelConfig ?? '');
                 $this->extraConfigList = $yaml->parse($extraAddition ?? '');
 
                 $consolidatedList = $this->getConsolidatedList();
@@ -53,7 +65,7 @@ class ConfigConsolidator extends Controller
             // dump($consolidatedList);
         }
 
-        return view('config_consolidator',['mergeResults' => $consolidatedList]);
+        return view('config_consolidator',['mergeResults' => $consolidatedList, 'inputConfig' => session('inputConfig')]);
     }
 
 
@@ -70,6 +82,10 @@ class ConfigConsolidator extends Controller
 
         if (!empty($this->moduleConfigList)) {
             $this->mergeConfigs($configList, $this->moduleConfigList);
+        }
+
+        if (!empty($this->pageConfigList)) {
+            $this->mergeConfigs($configList, $this->pageConfigList);
         }
 
         if (!empty($this->extraConfigList)) {
