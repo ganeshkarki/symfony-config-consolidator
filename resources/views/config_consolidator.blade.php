@@ -1,5 +1,32 @@
 @php
-    /** @var \Illuminate\Support\ViewErrorBag $errors */
+/** @var \Illuminate\Support\ViewErrorBag $errors */
+
+$appPlaceHolder = 'stylesheets:
+  - /css/main: { media: all }
+  - /css/secondary.css
+
+javascripts:
+  - /js/lib/jquery-3.3.1.min.js: {}
+  - /js/secondary.js';
+
+$modulePlaceHolder = 'stylesheets:
+  - /css/third: { media: all }
+
+javascripts:
+  - /js/third.js';
+
+$pagePlaceHolder = 'stylesheets:
+  - -/css/secondary.css
+
+javascripts:
+  - -/js/secondary.js';
+
+$extraPlaceHolder = 'stylesheets:
+  - /css/special.css
+
+javascripts:
+  - /js/special.js';
+
 @endphp
 
 <!doctype html>
@@ -95,19 +122,27 @@
             <input type="checkbox" name="transform" value="yes" checked /> Transform "- - subItem" to "- -subItem"<br><br>
             <label for="app-config">App Level Config (YAML)</label>
             <br>
-            <textarea id="app-config" name="app-config" rows="10" cols="100" required>{{ $inputConfig['app'] ?? null }}</textarea>
+            <textarea id="app-config" name="app-config" rows="10" cols="100" placeholder="{{ $appPlaceHolder }}}" required>{{
+                $inputConfig['app'] ?? null
+            }}</textarea>
             <br><br>
             <label for="module-config">Module Level Default Config (YAML)</label>
             <br>
-            <textarea id="module-config" name="module-config" rows="10" cols="100">{{ $inputConfig['module'] ?? null }}</textarea>
+            <textarea id="module-config" name="module-config" rows="10" cols="100" placeholder="{{ $modulePlaceHolder }}}" >{{
+                $inputConfig['module'] ?? null
+            }}</textarea>
             <br><br>
             <label for="page-config">Page Level Config (YAML)</label>
             <br>
-            <textarea id="page-config" name="page-config" rows="10" cols="100">{{ $inputConfig['page'] ?? null }}</textarea>
+            <textarea id="page-config" name="page-config" rows="10" cols="100" placeholder="{{ $pagePlaceHolder }}}" >{{
+                $inputConfig['page'] ?? null
+            }}</textarea>
             <br><br>
             <label for="extra-config">Manually added settings (YAML)</label>
             <br>
-            <textarea id="extra-config" name="extra-config" rows="5" cols="100">{{ $inputConfig['extra'] ?? null }}</textarea>
+            <textarea id="extra-config" name="extra-config" rows="5" cols="100" placeholder="{{ $extraPlaceHolder }}}" >{{
+                $inputConfig['extra'] ?? null
+            }}</textarea>
             <br>
             <input type="submit" value="Merge">
             <br><br>
