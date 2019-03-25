@@ -63,12 +63,13 @@ class ConfigConsolidator extends Controller
 
                 return redirect()->back()
                     ->withInput($request->all())
-                    ->withErrors($parseException->getMessage());
+                    ->withErrors('Invalid YAML format');
             } catch (\Exception $e) {
                 Log::alert('Something went wrong:' . $e->getMessage());
+
                 return redirect()->back()
                     ->withInput($request->all())
-                    ->withErrors($e->getMessage());
+                    ->withErrors('OOPS! Something went wrong. Check your input.');
             }
 
             $consolidatedList = $this->getYamlString($consolidatedList);
