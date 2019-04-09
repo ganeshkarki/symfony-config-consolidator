@@ -1,5 +1,5 @@
 <p align="center">
-<a href="http://symfonyconfigconsolidator-env.cwdgz45uue.us-east-2.elasticbeanstalk.com/">Demo</a>
+<a href="http://prj.ganeshkarkigk.com">Demo</a>
 </p>
 
 ## About Symfony Config Consolidator
