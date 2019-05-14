@@ -36,6 +36,20 @@ indexSuccess:
 all:
   stylesheets: [additional]
 ```
+## Local Setup
+####  Step 1: Vagrant Up
+```
+vagrant up
+```
+#### Step 2: Add host mapping in local (Mac OS)
+```
+sudo vi /etc/hosts
+
+# add hostname in /etc/hosts
+192.168.10.10   symfony-config.consolidator
+```
+#### Step 3: Access website from browser
+https://symfony-config.consolidator/
 
 ## Built with
 - [Laravel](https://laravel.com)
