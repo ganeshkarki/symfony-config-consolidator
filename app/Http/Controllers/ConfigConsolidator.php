@@ -109,9 +109,14 @@ class ConfigConsolidator extends Controller
     {
         foreach ($newConfig as $item => $subItem) {
             foreach ($subItem as $subItemString) {
+                // If value is nested it returns array
+                // Since we only need to path use the key instead
                 if (is_array($subItemString)) {
                     $subItemString = key($subItemString);
                 }
+
+                // Strip unneeded chars or url params from path
+                $subItemString = $this->getJsCssPathOnly($subItemString);
 
                 if (strpos($subItemString, '-') === 0) {
                     $subItemHash = md5(substr($subItemString, 1));
@@ -145,5 +150,12 @@ class ConfigConsolidator extends Controller
     private function transformDoubleDashToStringWithDashBefore(&$yamlString): void
     {
         $yamlString = str_replace('- - ', '- -', $yamlString);
+    }
+
+    private function getJsCssPathOnly(string $s)
+    {
+        preg_match('/(.*\.(css|js)).*$/', $s, $matches);
+
+        return $matches[1] ?? '' ?: $s;
     }
 }
