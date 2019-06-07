@@ -138,7 +138,7 @@ javascripts:
                 $inputConfig['page'] ?? null
             }}</textarea>
             <br><br>
-            <label for="extra-config">Manually added settings (YAML)</label>
+            <label for="extra-config">Layout modified settings (YAML)</label>
             <br>
             <textarea id="extra-config" name="extra-config" rows="5" cols="100" placeholder="{{ $extraPlaceHolder }}}" >{{
                 $inputConfig['extra'] ?? null
