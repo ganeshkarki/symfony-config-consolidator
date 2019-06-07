@@ -53,7 +53,10 @@ class ConfigConsolidator extends Controller
 
                 $this->appConfigList = $yaml->parse($appLevelConfig);
                 $this->moduleConfigList = $yaml->parse($moduleLevelConfig ?? '');
+                // TODO: Allow to specify the modification using use_javascrpt() or use_stylesheet()
+                //       helper methods instead of yaml formal for Page level and extraConfig
                 $this->pageConfigList = $yaml->parse($pageLevelConfig ?? '');
+                // TODO: rename extraConfigList to layoutConfigList
                 $this->extraConfigList = $yaml->parse($extraAddition ?? '');
 
                 $consolidatedList = $this->getConsolidatedList();
